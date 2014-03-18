@@ -247,7 +247,7 @@
  *
  * Enable Counter Block Cipher mode (CTR) for symmetric ciphers.
  */
-#define POLARSSL_CIPHER_MODE_CTR
+//#define POLARSSL_CIPHER_MODE_CTR
 
 /**
  * \def POLARSSL_CIPHER_NULL_CIPHER
@@ -345,7 +345,7 @@
  *
  * Comment this macro to disable NIST curves optimisation.
  */
-#define POLARSSL_ECP_NIST_OPTIM
+//#define POLARSSL_ECP_NIST_OPTIM
 
 /**
  * \def POLARSSL_ECDSA_DETERMINISTIC
@@ -359,7 +359,7 @@
  *
  * Comment this macro to disable deterministic ECDSA.
  */
-#define POLARSSL_ECDSA_DETERMINISTIC
+//#define POLARSSL_ECDSA_DETERMINISTIC
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_PSK_ENABLED
@@ -405,7 +405,7 @@
  *      TLS_DHE_PSK_WITH_3DES_EDE_CBC_SHA
  *      TLS_DHE_PSK_WITH_RC4_128_SHA
  */
-#define POLARSSL_KEY_EXCHANGE_DHE_PSK_ENABLED
+//#define POLARSSL_KEY_EXCHANGE_DHE_PSK_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_ECDHE_PSK_ENABLED
@@ -504,7 +504,7 @@
  *      TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA
  *      TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
  */
-#define POLARSSL_KEY_EXCHANGE_DHE_RSA_ENABLED
+//#define POLARSSL_KEY_EXCHANGE_DHE_RSA_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_ECDHE_RSA_ENABLED
@@ -632,14 +632,14 @@
  *
  * Requires: POLARSSL_BIGNUM_C
  */
-#define POLARSSL_GENPRIME
+//#define POLARSSL_GENPRIME
 
 /**
  * \def POLARSSL_FS_IO
  *
  * Enable functions that use the filesystem.
  */
-#define POLARSSL_FS_IO
+//#define POLARSSL_FS_IO
 
 /**
  * \def POLARSSL_NO_DEFAULT_ENTROPY_SOURCES
@@ -743,7 +743,7 @@
  *
  * Enable the checkup functions (*_self_test).
  */
-#define POLARSSL_SELF_TEST
+//#define POLARSSL_SELF_TEST
 
 /**
  * \def POLARSSL_SSL_ALL_ALERT_MESSAGES
@@ -848,7 +848,7 @@
  *
  * Comment this macro to disable support for TLS 1.1
  */
-#define POLARSSL_SSL_PROTO_TLS1_1
+//#define POLARSSL_SSL_PROTO_TLS1_1
 
 /**
  * \def POLARSSL_SSL_PROTO_TLS1_2
@@ -1256,7 +1256,7 @@
  *
  * This module provides debugging functions.
  */
-#define POLARSSL_DEBUG_C
+//#define POLARSSL_DEBUG_C
 
 /**
  * \def POLARSSL_DES_C
@@ -1296,7 +1296,7 @@
  * This module is used by the following key exchanges:
  *      DHE-RSA, DHE-PSK
  */
-#define POLARSSL_DHM_C
+//#define POLARSSL_DHM_C
 
 /**
  * \def POLARSSL_ECDH_C
