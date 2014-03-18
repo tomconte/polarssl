@@ -35,6 +35,129 @@
 #include "polarssl/error.h"
 #include "polarssl/certs.h"
 
+/*
+ * Author:  David Robert Nadeau
+ * Site:    http://NadeauSoftware.com/
+ * License: Creative Commons Attribution 3.0 Unported License
+ *          http://creativecommons.org/licenses/by/3.0/deed.en_US
+ */
+
+#if defined(_WIN32)
+#include <windows.h>
+#include <psapi.h>
+
+#elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
+#include <unistd.h>
+#include <sys/resource.h>
+
+#if defined(__APPLE__) && defined(__MACH__)
+#include <mach/mach.h>
+
+#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
+#include <fcntl.h>
+#include <procfs.h>
+
+#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
+#include <stdio.h>
+
+#endif
+
+#else
+#error "Cannot define getPeakRSS( ) or getCurrentRSS( ) for an unknown OS."
+#endif
+
+
+
+
+
+/**
+ * Returns the peak (maximum so far) resident set size (physical
+ * memory use) measured in bytes, or zero if the value cannot be
+ * determined on this OS.
+ */
+size_t getPeakRSS( )
+{
+#if defined(_WIN32)
+    /* Windows -------------------------------------------------- */
+    PROCESS_MEMORY_COUNTERS info;
+    GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
+    return (size_t)info.PeakWorkingSetSize;
+
+#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
+    /* AIX and Solaris ------------------------------------------ */
+    struct psinfo psinfo;
+    int fd = -1;
+    if ( (fd = open( "/proc/self/psinfo", O_RDONLY )) == -1 )
+        return (size_t)0L;      /* Can't open? */
+    if ( read( fd, &psinfo, sizeof(psinfo) ) != sizeof(psinfo) )
+    {
+        close( fd );
+        return (size_t)0L;      /* Can't read? */
+    }
+    close( fd );
+    return (size_t)(psinfo.pr_rssize * 1024L);
+
+#elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
+    /* BSD, Linux, and OSX -------------------------------------- */
+    struct rusage rusage;
+    getrusage( RUSAGE_SELF, &rusage );
+#if defined(__APPLE__) && defined(__MACH__)
+    return (size_t)rusage.ru_maxrss;
+#else
+    return (size_t)(rusage.ru_maxrss * 1024L);
+#endif
+
+#else
+    /* Unknown OS ----------------------------------------------- */
+    return (size_t)0L;          /* Unsupported. */
+#endif
+}
+
+
+
+
+
+/**
+ * Returns the current resident set size (physical memory use) measured
+ * in bytes, or zero if the value cannot be determined on this OS.
+ */
+size_t getCurrentRSS( )
+{
+#if defined(_WIN32)
+    /* Windows -------------------------------------------------- */
+    PROCESS_MEMORY_COUNTERS info;
+    GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
+    return (size_t)info.WorkingSetSize;
+
+#elif defined(__APPLE__) && defined(__MACH__)
+    /* OSX ------------------------------------------------------ */
+    struct mach_task_basic_info info;
+    mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
+    if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
+        (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+        return (size_t)0L;      /* Can't access? */
+    return (size_t)info.resident_size;
+
+#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
+    /* Linux ---------------------------------------------------- */
+    long rss = 0L;
+    FILE* fp = NULL;
+    if ( (fp = fopen( "/proc/self/statm", "r" )) == NULL )
+        return (size_t)0L;      /* Can't open? */
+    if ( fscanf( fp, "%*s%ld", &rss ) != 1 )
+    {
+        fclose( fp );
+        return (size_t)0L;      /* Can't read? */
+    }
+    fclose( fp );
+    return (size_t)rss * (size_t)sysconf( _SC_PAGESIZE);
+
+#else
+    /* AIX, BSD, Solaris, and Unknown OS ------------------------ */
+    return (size_t)0L;          /* Unsupported. */
+#endif
+}
+
 #if !defined(POLARSSL_BIGNUM_C) || !defined(POLARSSL_ENTROPY_C) ||  \
     !defined(POLARSSL_SSL_TLS_C) || !defined(POLARSSL_SSL_CLI_C) || \
     !defined(POLARSSL_NET_C) || !defined(POLARSSL_RSA_C) ||         \
@@ -53,8 +176,8 @@ int main( int argc, char *argv[] )
 }
 #else
 
-#define SERVER_PORT 4433
-#define SERVER_NAME "localhost"
+#define SERVER_PORT 443
+#define SERVER_NAME "www.bing.com"
 #define GET_REQUEST "GET / HTTP/1.0\r\n\r\n"
 
 #define DEBUG_LEVEL 1
@@ -77,16 +200,20 @@ int main( int argc, char *argv[] )
     entropy_context entropy;
     ctr_drbg_context ctr_drbg;
     ssl_context ssl;
-    x509_crt cacert;
+    //x509_crt cacert;
 
     ((void) argc);
     ((void) argv);
+
+
+    size_t currentSize = getCurrentRSS( );
+    printf("current rss: %zu\n", currentSize);
 
     /*
      * 0. Initialize the RNG and the session data
      */
     memset( &ssl, 0, sizeof( ssl_context ) );
-    x509_crt_init( &cacert );
+    //x509_crt_init( &cacert );
 
     printf( "\n  . Seeding the random number generator..." );
     fflush( stdout );
@@ -109,18 +236,18 @@ int main( int argc, char *argv[] )
     fflush( stdout );
 
 #if defined(POLARSSL_CERTS_C)
-    ret = x509_crt_parse( &cacert, (const unsigned char *) test_ca_list,
-                          strlen( test_ca_list ) );
+//    ret = x509_crt_parse( &cacert, (const unsigned char *) test_ca_list,
+//                          strlen( test_ca_list ) );
 #else
     ret = 1;
     printf("POLARSSL_CERTS_C not defined.");
 #endif
 
-    if( ret < 0 )
-    {
-        printf( " failed\n  !  x509_crt_parse returned -0x%x\n\n", -ret );
-        goto exit;
-    }
+//    if( ret < 0 )
+//    {
+//        printf( " failed\n  !  x509_crt_parse returned -0x%x\n\n", -ret );
+//        goto exit;
+//    }
 
     printf( " ok (%d skipped)\n", ret );
 
@@ -155,11 +282,11 @@ int main( int argc, char *argv[] )
     printf( " ok\n" );
 
     ssl_set_endpoint( &ssl, SSL_IS_CLIENT );
-    ssl_set_authmode( &ssl, SSL_VERIFY_OPTIONAL );
-    ssl_set_ca_chain( &ssl, &cacert, NULL, "PolarSSL Server 1" );
+    // ssl_set_authmode( &ssl, SSL_VERIFY_OPTIONAL );
+    //ssl_set_ca_chain( &ssl, &cacert, NULL, "PolarSSL Server 1" );
 
     ssl_set_rng( &ssl, ctr_drbg_random, &ctr_drbg );
-    ssl_set_dbg( &ssl, my_debug, stdout );
+    // ssl_set_dbg( &ssl, my_debug, stdout );
     ssl_set_bio( &ssl, net_recv, &server_fd,
                        net_send, &server_fd );
 
@@ -261,6 +388,9 @@ int main( int argc, char *argv[] )
     }
     while( 1 );
 
+    size_t peakSize = getPeakRSS( );
+    printf("max rss: %zu\n", peakSize);
+
     ssl_close_notify( &ssl );
 
 exit:
@@ -274,7 +404,7 @@ exit:
     }
 #endif
 
-    x509_crt_free( &cacert );
+//    x509_crt_free( &cacert );
     net_close( server_fd );
     ssl_free( &ssl );
     entropy_free( &entropy );
