@@ -985,7 +985,7 @@
  *
  * This modules adds support for the AES-NI instructions on x86-64
  */
-#define POLARSSL_AESNI_C
+//#define POLARSSL_AESNI_C
 
 /**
  * \def POLARSSL_AES_C
@@ -1111,7 +1111,7 @@
  *          library/x509write_crt.c
  *          library/x509write_csr.c
  */
-#define POLARSSL_ASN1_WRITE_C
+//#define POLARSSL_ASN1_WRITE_C
 
 /**
  * \def POLARSSL_BASE64_C
@@ -1216,7 +1216,7 @@
  *
  * This module is used for testing (ssl_client/server).
  */
-#define POLARSSL_CERTS_C
+//#define POLARSSL_CERTS_C
 
 /**
  * \def POLARSSL_CIPHER_C
@@ -1366,7 +1366,7 @@
  *
  * This module enables err_strerror().
  */
-#define POLARSSL_ERROR_C
+//#define POLARSSL_ERROR_C
 
 /**
  * \def POLARSSL_GCM_C
@@ -1538,7 +1538,7 @@
  *
  * This modules adds support for the VIA PadLock on x86.
  */
-#define POLARSSL_PADLOCK_C
+//#define POLARSSL_PADLOCK_C
 
 /**
  * \def POLARSSL_PBKDF2_C
@@ -1552,7 +1552,7 @@
  *
  * This module adds support for the PKCS#5 PBKDF2 key derivation function.
  */
-#define POLARSSL_PBKDF2_C
+//#define POLARSSL_PBKDF2_C
 
 /**
  * \def POLARSSL_PEM_PARSE_C
@@ -1570,7 +1570,7 @@
  *
  * This modules adds support for decoding / parsing PEM files.
  */
-#define POLARSSL_PEM_PARSE_C
+//#define POLARSSL_PEM_PARSE_C
 
 /**
  * \def POLARSSL_PEM_WRITE_C
@@ -1644,7 +1644,7 @@
  *
  * This module adds support for the PKCS#5 functions.
  */
-#define POLARSSL_PKCS5_C
+//#define POLARSSL_PKCS5_C
 
 /**
  * \def POLARSSL_PKCS11_C
@@ -1675,7 +1675,7 @@
  *
  * This module enables PKCS#12 functions.
  */
-#define POLARSSL_PKCS12_C
+//#define POLARSSL_PKCS12_C
 
 /**
  * \def POLARSSL_PLATFORM_C
@@ -1699,7 +1699,7 @@
  * Caller:  library/md.c
  *
  */
-#define POLARSSL_RIPEMD160_C
+//#define POLARSSL_RIPEMD160_C
 
 /**
  * \def POLARSSL_RSA_C
@@ -1767,7 +1767,7 @@
  *
  * This module adds support for SHA-384 and SHA-512.
  */
-#define POLARSSL_SHA512_C
+//#define POLARSSL_SHA512_C
 
 /**
  * \def POLARSSL_SSL_CACHE_C
@@ -1779,7 +1779,7 @@
  *
  * Requires: POLARSSL_SSL_CACHE_C
  */
-#define POLARSSL_SSL_CACHE_C
+// #define POLARSSL_SSL_CACHE_C
 
 /**
  * \def POLARSSL_SSL_CLI_C
@@ -1856,7 +1856,7 @@
  *
  * This module is used by the HAVEGE random number generator.
  */
-#define POLARSSL_TIMING_C
+//#define POLARSSL_TIMING_C
 
 /**
  * \def POLARSSL_VERSION_C
@@ -1867,7 +1867,7 @@
  *
  * This module provides run-time version information.
  */
-#define POLARSSL_VERSION_C
+//#define POLARSSL_VERSION_C
 
 /**
  * \def POLARSSL_X509_USE_C
