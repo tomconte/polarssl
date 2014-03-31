@@ -282,9 +282,9 @@ const char test_dhm_params[] =
 #endif
 
 /* Concatenation of all available CA certificates */
-const char test_ca_list[] = TEST_CA_CRT_RSA TEST_CA_CRT_EC;
 
 #if defined(POLARSSL_RSA_C)
+const char test_ca_list[] = TEST_CA_CRT_RSA TEST_CA_CRT_EC;
 const char *test_ca_crt = test_ca_crt_rsa;
 const char *test_ca_key = test_ca_key_rsa;
 const char *test_ca_pwd = test_ca_pwd_rsa;
@@ -292,7 +292,10 @@ const char *test_srv_crt = test_srv_crt_rsa;
 const char *test_srv_key = test_srv_key_rsa;
 const char *test_cli_crt = test_cli_crt_rsa;
 const char *test_cli_key = test_cli_key_rsa;
-#else /* ! POLARSSL_RSA_C, so POLARSSL_ECDSA_C */
+#endif /* ! POLARSSL_RSA_C, so POLARSSL_ECDSA_C */
+
+#if defined(POLARSSL_ECDSA_C)
+const char test_ca_list[] = TEST_CA_CRT_RSA TEST_CA_CRT_EC;
 const char *test_ca_crt = test_ca_crt_ec;
 const char *test_ca_key = test_ca_key_ec;
 const char *test_ca_pwd = test_ca_pwd_ec;

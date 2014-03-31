@@ -450,7 +450,7 @@
  *      TLS_RSA_PSK_WITH_3DES_EDE_CBC_SHA
  *      TLS_RSA_PSK_WITH_RC4_128_SHA
  */
-#define POLARSSL_KEY_EXCHANGE_RSA_PSK_ENABLED
+//#define POLARSSL_KEY_EXCHANGE_RSA_PSK_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_RSA_ENABLED
@@ -478,7 +478,7 @@
  *      TLS_RSA_WITH_RC4_128_SHA
  *      TLS_RSA_WITH_RC4_128_MD5
  */
-#define POLARSSL_KEY_EXCHANGE_RSA_ENABLED
+//#define POLARSSL_KEY_EXCHANGE_RSA_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_DHE_RSA_ENABLED
@@ -715,7 +715,7 @@
  *
  * This enables support for PKCS#1 v1.5 operations.
  */
-#define POLARSSL_PKCS1_V15
+//#define POLARSSL_PKCS1_V15
 
 /**
  * \def POLARSSL_PKCS1_V21
@@ -1216,7 +1216,7 @@
  *
  * This module is used for testing (ssl_client/server).
  */
-//#define POLARSSL_CERTS_C
+#define POLARSSL_CERTS_C
 
 /**
  * \def POLARSSL_CIPHER_C
@@ -1570,7 +1570,7 @@
  *
  * This modules adds support for decoding / parsing PEM files.
  */
-//#define POLARSSL_PEM_PARSE_C
+#define POLARSSL_PEM_PARSE_C
 
 /**
  * \def POLARSSL_PEM_WRITE_C
@@ -1602,7 +1602,7 @@
  *
  * Uncomment to enable generic public key wrappers.
  */
-#define POLARSSL_PK_C
+//#define POLARSSL_PK_C
 
 /**
  * \def POLARSSL_PK_PARSE_C
@@ -1617,7 +1617,7 @@
  *
  * Uncomment to enable generic public key parse functions.
  */
-#define POLARSSL_PK_PARSE_C
+//#define POLARSSL_PK_PARSE_C
 
 /**
  * \def POLARSSL_PK_WRITE_C
@@ -1717,7 +1717,7 @@
  *
  * Requires: POLARSSL_BIGNUM_C, POLARSSL_OID_C
  */
-#define POLARSSL_RSA_C
+//#define POLARSSL_RSA_C
 
 /**
  * \def POLARSSL_SHA1_C
@@ -1884,7 +1884,7 @@
  *
  * This module is required for the X.509 parsing modules.
  */
-#define POLARSSL_X509_USE_C
+//#define POLARSSL_X509_USE_C
 
 /**
  * \def POLARSSL_X509_CRT_PARSE_C
@@ -1900,7 +1900,7 @@
  *
  * This module is required for X.509 certificate parsing.
  */
-#define POLARSSL_X509_CRT_PARSE_C
+//#define POLARSSL_X509_CRT_PARSE_C
 
 /**
  * \def POLARSSL_X509_CRL_PARSE_C
