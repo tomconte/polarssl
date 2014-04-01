@@ -1097,7 +1097,7 @@
  *          library/pkcs5.c
  *          library/pkparse.c
  */
-#define POLARSSL_ASN1_PARSE_C
+//#define POLARSSL_ASN1_PARSE_C
 
 /**
  * \def POLARSSL_ASN1_WRITE_C
@@ -1216,7 +1216,7 @@
  *
  * This module is used for testing (ssl_client/server).
  */
-#define POLARSSL_CERTS_C
+//#define POLARSSL_CERTS_C
 
 /**
  * \def POLARSSL_CIPHER_C
@@ -1570,7 +1570,7 @@
  *
  * This modules adds support for decoding / parsing PEM files.
  */
-#define POLARSSL_PEM_PARSE_C
+//#define POLARSSL_PEM_PARSE_C
 
 /**
  * \def POLARSSL_PEM_WRITE_C
