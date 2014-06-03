@@ -1,26 +1,27 @@
 cmake_minimum_required(VERSION 2.6)
+
+SET(CMAKE_SYSTEM_NAME Generic)
+
+SET(CMAKE_C_COMPILER avr-gcc)
+SET(CMAKE_CXX_COMPILER avr-g++)
+
+SET(CSTANDARD "-std=gnu99")
+SET(CDEBUG "-gstabs")
+SET(CWARN "-Wall -Wstrict-prototypes")
+SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums")
+SET(COPT "-Os")
+SET(CINCS "-I${Candi_SOURCE_DIR}/libarduino")
+SET(CMCU "-mmcu=atmega168")
+SET(CDEFS "-DF_CPU=16000000")
+
+
+SET(CFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${CINCS} ${COPT} ${CWARN} ${CSTANDARD} ${CEXTRA}")
+SET(CXXFLAGS "${CMCU} ${CDEFS} ${CINCS} ${COPT}")
+
+SET(CMAKE_C_FLAGS ${CFLAGS})
+SET(CMAKE_CXX_FLAGS ${CXXFLAGS})
+
 project(POLARSSL C)
-
-enable_testing()
-
-string(REGEX MATCH "clang" CMAKE_COMPILER_IS_CLANG "${CMAKE_C_COMPILER}")
-
-if(CMAKE_COMPILER_IS_GNUCC)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -W -Wdeclaration-after-statement")
-  set(CMAKE_C_FLAGS_DEBUG "-g3 -O0")
-  set(CMAKE_C_FLAGS_COVERAGE "-g3 -O0 --coverage")
-  set(CMAKE_C_FLAGS_ASAN "-fsanitize=address -fno-omit-frame-pointer -g3 -O1")
-  set(CMAKE_C_FLAGS_CHECK "${CMAKE_C_FLAGS} -Werror -Wlogical-op -Wwrite-strings")
-  set(CMAKE_C_FLAGS_CHECKFULL "${CMAKE_C_FLAGS_CHECK} -Wcast-qual")
-endif(CMAKE_COMPILER_IS_GNUCC)
-
-if(CMAKE_COMPILER_IS_CLANG)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -W -Wdeclaration-after-statement")
-  set(CMAKE_C_FLAGS_DEBUG "-g3 -O0")
-  set(CMAKE_C_FLAGS_COVERAGE "-g3 -O0 --coverage")
-  set(CMAKE_C_FLAGS_ASAN "-fsanitize=address -fno-omit-frame-pointer -g3 -O1")
-  set(CMAKE_C_FLAGS_CHECK "${CMAKE_C_FLAGS} -Werror -Wpointer-arith -Wwrite-strings -Wdocumentation")
-endif(CMAKE_COMPILER_IS_CLANG)
 
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}
     CACHE STRING "Choose the type of build: None Debug Release Coverage ASan Check CheckFull"
@@ -56,15 +57,6 @@ endif(ENABLE_ZLIB_SUPPORT)
 
 add_subdirectory(library)
 add_subdirectory(include)
-
-if(CMAKE_COMPILER_IS_GNUCC)
-  add_subdirectory(tests)
-endif(CMAKE_COMPILER_IS_GNUCC)
-if(CMAKE_COMPILER_IS_CLANG)
-  add_subdirectory(tests)
-endif(CMAKE_COMPILER_IS_CLANG)
-
-add_subdirectory(programs)
 
 ADD_CUSTOM_TARGET(apidoc
                   COMMAND doxygen doxygen/polarssl.doxyfile

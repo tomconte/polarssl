@@ -100,7 +100,7 @@
  *
  * Comment if your system does not support time functions
  */
-#define POLARSSL_HAVE_TIME
+//#define POLARSSL_HAVE_TIME
 
 /**
  * \def POLARSSL_HAVE_IPV6
@@ -112,7 +112,7 @@
  *
  * Comment if your system does not support the IPv6 socket interface
  */
-#define POLARSSL_HAVE_IPV6
+//#define POLARSSL_HAVE_IPV6
 
 /**
  * \def POLARSSL_PLATFORM_MEMORY
@@ -1501,7 +1501,7 @@
  *
  * This module provides TCP/IP networking routines.
  */
-#define POLARSSL_NET_C
+//#define POLARSSL_NET_C
 
 /**
  * \def POLARSSL_OID_C
