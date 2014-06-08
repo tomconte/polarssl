@@ -2,18 +2,26 @@ cmake_minimum_required(VERSION 2.6)
 
 SET(CMAKE_SYSTEM_NAME Generic)
 
-SET(CMAKE_C_COMPILER avr-gcc)
-SET(CMAKE_CXX_COMPILER avr-g++)
+# add the Arduino toolchain to your PATH, e.g.
+# export PATH=$PATH:~/iot/arduino-1.5.6-r2/hardware/tools/g++_arm_none_eabi/bin
 
-SET(CSTANDARD "-std=gnu99")
-SET(CDEBUG "-gstabs")
-SET(CWARN "-Wall -Wstrict-prototypes")
-SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums")
-SET(COPT "-Os")
-SET(CINCS "-I${Candi_SOURCE_DIR}/libarduino")
-SET(CMCU "-mmcu=atmega168")
-SET(CDEFS "-DF_CPU=16000000")
+SET(CMAKE_C_COMPILER arm-none-eabi-gcc)
+SET(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
+SET(HOME ~/iot/arduino-1.5.6-r2)
+SET(ADIR ${HOME}/hardware)
+SET(SAM arduino/sam/)
+SET(CMSIS arduino/sam/system/CMSIS/)
+SET(LIBSAM arduino/sam/system/libsam)
+
+SET(CSTANDARD "-g -Os -w -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -mcpu=cortex-m3  -mthumb")
+SET(CDEBUG "")
+SET(CWARN "")
+SET(CTUNING "")
+SET(COPT "")
+SET(CINCS "-I${ADIR}/${LIBSAM} -I${ADIR}/${CMSIS}/CMSIS/Include/ -I${ADIR}/${CMSIS}/Device/ATMEL/ -I${ADIR}/${SAM}/cores/arduino -I${ADIR}/${SAM}/variants/arduino_due_x")
+SET(CMCU "")
+SET(CDEFS "-Dprintf=iprintf -DF_CPU=84000000L -DARDUINO=152 -D__SAM3X8E__ -DUSB_PID=0x003e -DUSB_VID=0x2341 -DUSBCON")
 
 SET(CFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${CINCS} ${COPT} ${CWARN} ${CSTANDARD} ${CEXTRA}")
 SET(CXXFLAGS "${CMCU} ${CDEFS} ${CINCS} ${COPT}")
