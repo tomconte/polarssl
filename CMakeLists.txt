@@ -1,14 +1,17 @@
 cmake_minimum_required(VERSION 2.6)
 
 SET(CMAKE_SYSTEM_NAME Generic)
+SET(CMAKE_SYSTEM_PROCESSOR arm-eabi)
 
 # add the Arduino toolchain to your PATH, e.g.
 # export PATH=$PATH:~/iot/arduino-1.5.6-r2/hardware/tools/g++_arm_none_eabi/bin
 
 SET(CMAKE_C_COMPILER arm-none-eabi-gcc)
 SET(CMAKE_CXX_COMPILER arm-none-eabi-g++)
+SET(CMAKE_RANLIB arm-none-eabi-ranlib)
+SET(CMAKE_AR arm-none-eabi-ar)
 
-SET(HOME ~/iot/arduino-1.5.6-r2)
+SET(HOME /Applications/Arduino.app/Contents/Resources/Java/)
 SET(ADIR ${HOME}/hardware)
 SET(SAM arduino/sam/)
 SET(CMSIS arduino/sam/system/CMSIS/)
